@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:build": "webpack --watch",
     "dev:start": "nodemon server/index.js",
-    "start": "npm-run-all -p dev:*"
+    "start": "npm-run-all -p dev:*",
+    "seed": "node seeders/seed.js"
   },
   "repository": {
     "type": "git",
@@ -21,8 +22,17 @@
   },
   "homepage": "https://github.com/Jbrito6492/anagrams#readme",
   "dependencies": {
+    "byline": "^5.0.0",
     "cors": "^2.8.5",
+    "csv-parse": "^4.15.1",
+    "csv-parser": "^3.0.0",
+    "csv-stream": "^0.2.0",
+    "csv-streamify": "^4.0.0",
+    "csv-stringify": "^5.6.1",
+    "dotenv-webpack": "^6.0.0",
     "express": "^4.17.1",
+    "line-input-stream": "^1.0.1",
+    "mongoose": "^5.11.17",
     "nodemon": "^2.0.7",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
