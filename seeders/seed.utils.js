@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const fs = require('fs');
 const parse = require('csv-parse');
-const Word = require('../database/models/Word');
+const WordSchema = require('../database/models/Word');
 const uri = "mongodb://localhost/anagrams";
 
 const options = {
@@ -11,23 +11,13 @@ const options = {
   useCreateIndex: true
 };
 
-async function saveRecord(row) {
-  const record = new Word({
-    word: row,
-    language: "eng"
-  })
-  await record.save(function (err) {
-    if (err) {
-      console.log(err)
-    } else {
-      console.log(`saved ${row}}`)
-    }
-  });
-};
-
 async function closeConnection(connection) {
-  await console.log('mongoose connection disconnected');
-  connection.close();
+  try {
+    await console.log('mongoose connection disconnected');
+    connection.disconnect();
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 async function writeToDB() {
@@ -39,19 +29,17 @@ async function writeToDB() {
       } else {
         console.log('parsing data')
         parse(data, {
-          delimiter: '\n'
-        }, function (err, data) {
-          if (err) {
+          delimiter: '\n',
+          cast: function (value, context) {
+            return { word: value }
+          }
+        }, async function (err, data) {
+          try {
+            data = data.flat();
+            await WordSchema.insertMany(data);
+            closeConnection(connection);
+          } catch (err) {
             console.log(err);
-          } else {
-            for (let i = 0; i < data.length; i++) {
-              if (i === data.length - 1) {
-                saveRecord(data[i].toString());
-                closeConnection(connection);
-              } else {
-                saveRecord(data[i].toString());
-              }
-            }
           }
         })
       }
