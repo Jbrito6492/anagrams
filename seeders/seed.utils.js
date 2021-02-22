@@ -25,7 +25,7 @@ async function writeToDB() {
   return fs.readFile(__dirname + '/data.csv', { encoding: 'utf8' },
     function (err, data) {
       if (err) {
-        console.log(err)
+        console.log(err);
       } else {
         console.log('parsing data')
         parse(data, {
