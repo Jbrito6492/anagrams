@@ -4,7 +4,7 @@ const ObjectId = Schema.ObjectId;
 
 const WordSchema = new Schema({
   id: ObjectId,
-  word: String,
+  word: { type: String, unique: true },
   language: { type: String, default: "eng" }
 });
 
